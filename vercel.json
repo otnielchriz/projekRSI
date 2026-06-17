@@ -1,14 +1,30 @@
 {
+  "version": 2,
   "builds": [
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
     {
       "src": "Backend/app/main.py",
       "use": "@vercel/python"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "Backend/app/main.py"
-    }
+  "rewrites": [
+    { "source": "/auth/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/skills", "destination": "/Backend/app/main.py" },
+    { "source": "/skills/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/profile/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/jobs", "destination": "/Backend/app/main.py" },
+    { "source": "/jobs/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/applications/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/admin/(.+)", "destination": "/Backend/app/main.py" },
+    { "source": "/uploads/(.*)", "destination": "/Backend/app/main.py" },
+    { "source": "/docs", "destination": "/Backend/app/main.py" },
+    { "source": "/openapi.json", "destination": "/Backend/app/main.py" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
