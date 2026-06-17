@@ -7,7 +7,9 @@ from app.routes.dependencies import require_role
 import os
 
 router = APIRouter(prefix="/profile", tags=["Profil Pelamar"])
-UPLOAD_DIR = "/uploads/cv"
+import tempfile
+# Gunakan direktori temporary agar bisa berjalan di Vercel (read-only file system)
+UPLOAD_DIR = os.path.join(tempfile.gettempdir(), "uploads", "cv")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
@@ -177,14 +179,15 @@ def upload_cv(file: UploadFile = File(...), db: Session = Depends(get_db), user:
     if len(content) > 5 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="ERR-VAL-09: Ukuran CV maksimal 5MB")
 
-    path = f"{UPLOAD_DIR}/user_{user.id}_{file.filename}"
-    with open(path, "wb") as f:
+    local_path = os.path.join(UPLOAD_DIR, f"user_{user.id}_{file.filename}")
+    with open(local_path, "wb") as f:
         f.write(content)
 
+    public_path = f"/uploads/cv/user_{user.id}_{file.filename}"
     existing = db.query(CV).filter(CV.user_id == user.id).first()
     if existing:
-        existing.file_path = path
+        existing.file_path = public_path
     else:
-        db.add(CV(user_id=user.id, file_path=path))
+        db.add(CV(user_id=user.id, file_path=public_path))
     db.commit()
-    return {"message": "CV berhasil diupload", "file_path": path}
+    return {"message": "CV berhasil diupload", "file_path": public_path}

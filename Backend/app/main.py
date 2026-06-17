@@ -29,8 +29,10 @@ app = FastAPI(title="KerjoLe Backend API", version="1.0.0")
 
 # Melayani direktori /uploads secara statis
 import os
-os.makedirs("/uploads/cv", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="/uploads"), name="uploads")
+import tempfile
+UPLOAD_BASE_DIR = os.path.join(tempfile.gettempdir(), "uploads")
+os.makedirs(os.path.join(UPLOAD_BASE_DIR, "cv"), exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=UPLOAD_BASE_DIR), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
