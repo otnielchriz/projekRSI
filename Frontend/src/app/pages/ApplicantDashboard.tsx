@@ -6,7 +6,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Badge } from "../components/ui/badge";
 import { Slider } from "../components/ui/slider";
-import { profileApi, skillsApi, Skill as MasterSkill, Job, jobsApi } from "../services/api";
+import { profileApi, skillsApi, Skill as MasterSkill, Job, jobsApi, API_URL } from "../services/api";
 import {
   Briefcase,
   FileText,
@@ -904,7 +904,7 @@ export default function ApplicantDashboard() {
                           Terakhir diunggah: {formatDate(cvData.uploaded_at)}
                         </p>
                         <a 
-                          href={`http://localhost:8000${cvData.file_path}`} 
+                          href={`${API_URL}${cvData.file_path}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-[var(--coral)] text-sm font-semibold hover:underline inline-block mt-2"

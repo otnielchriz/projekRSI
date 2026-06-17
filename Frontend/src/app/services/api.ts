@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "https://kerjo-le-platform-kmtdzqcpl-evanhauzal-6126s-projects.vercel.app";
+export const API_URL = import.meta.env.VITE_API_URL || "https://kerjo-le-platform-kmtdzqcpl-evanhauzal-6126s-projects.vercel.app";
 
 export type Role = "user" | "company" | "admin";
 

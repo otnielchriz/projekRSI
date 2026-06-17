@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { applicationsApi } from "../services/api";
+import { applicationsApi, API_URL } from "../services/api";
 import { User, Mail, FileText, CheckCircle2, XCircle } from "lucide-react";
 
 export default function ApplicantDetailPage() {
@@ -213,7 +213,7 @@ export default function ApplicantDetailPage() {
                     <div className="flex-1">
                       <p className="font-semibold text-gray-800">Dokumen CV Pelamar</p>
                       <a 
-                        href={`http://localhost:8000${applicant.cv_path}`} 
+                        href={`${API_URL}${applicant.cv_path}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-[var(--coral)] text-sm hover:underline font-medium inline-block mt-1"
