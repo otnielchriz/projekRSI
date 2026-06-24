@@ -188,22 +188,22 @@ def create_job(
         raise HTTPException(status_code=403, detail="Akun perusahaan belum divalidasi admin")
 
     if len(payload.job_title) > 100:
-        raise HTTPException(status_code=400, detail="ERR-VAL-11: Judul lowongan maksimal 100 karakter")
+        raise HTTPException(status_code=400, detail="Judul lowongan maksimal 100 karakter")
 
     if not payload.job_description.strip():
-        raise HTTPException(status_code=400, detail="ERR-VAL-12: Deskripsi pekerjaan wajib diisi")
+        raise HTTPException(status_code=400, detail="Deskripsi pekerjaan wajib diisi")
 
     if not payload.job_qualification.strip():
-        raise HTTPException(status_code=400, detail="ERR-VAL-12: Kualifikasi pekerjaan wajib diisi")
+        raise HTTPException(status_code=400, detail="Kualifikasi pekerjaan wajib diisi")
 
     if not payload.required_skills:
-        raise HTTPException(status_code=400, detail="ERR-BUS-11: Lowongan wajib memiliki minimal 1 skill")
+        raise HTTPException(status_code=400, detail="Lowongan wajib memiliki minimal 1 skill")
 
     if len(payload.required_skills) > 5:
         raise HTTPException(status_code=400, detail="Required skill maksimal 5")
 
     if payload.expired_date and payload.expired_date < datetime.utcnow():
-        raise HTTPException(status_code=400, detail="ERR-VAL-13: Tanggal kedaluwarsa tidak valid")
+        raise HTTPException(status_code=400, detail="Tanggal kedaluwarsa tidak valid")
 
     status = payload.status if payload.status in ["draft", "published", "closed"] else "draft"
 

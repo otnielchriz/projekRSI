@@ -75,7 +75,7 @@ def my_skills(db: Session = Depends(get_db), user: User = Depends(require_role(U
 def add_user_skill(payload: UserSkillCreate, db: Session = Depends(get_db), user: User = Depends(require_role(UserRole.user))):
     total = db.query(UserSkill).filter(UserSkill.user_id == user.id).count()
     if total >= 10:
-        raise HTTPException(status_code=400, detail="ERR-BUS-01: Hard skill maksimal 10")
+        raise HTTPException(status_code=400, detail="Hard skill maksimal 10")
 
     exists = db.query(UserSkill).filter(UserSkill.user_id == user.id, UserSkill.skill_id == payload.skill_id).first()
     if exists:
@@ -107,7 +107,7 @@ def my_projects(user: User = Depends(require_role(UserRole.user))):
 def add_project(payload: ProjectCreate, db: Session = Depends(get_db), user: User = Depends(require_role(UserRole.user))):
     total = db.query(Project).filter(Project.user_id == user.id).count()
     if total >= 10:
-        raise HTTPException(status_code=400, detail="ERR-BUS-03: Project maksimal 10")
+        raise HTTPException(status_code=400, detail="Project maksimal 10")
     if not payload.skill_ids:
         raise HTTPException(status_code=400, detail="Project wajib menautkan minimal 1 skill")
 
@@ -142,7 +142,7 @@ def my_certificates(user: User = Depends(require_role(UserRole.user))):
 def add_certificate(payload: CertificateCreate, db: Session = Depends(get_db), user: User = Depends(require_role(UserRole.user))):
     total = db.query(Certificate).filter(Certificate.user_id == user.id).count()
     if total >= 5:
-        raise HTTPException(status_code=400, detail="ERR-BUS-04: Sertifikat maksimal 5")
+        raise HTTPException(status_code=400, detail="Sertifikat maksimal 5")
 
     cert = Certificate(user_id=user.id, **payload.model_dump())
     db.add(cert)
@@ -173,11 +173,11 @@ def add_soft_skill(payload: SoftSkillCreate, db: Session = Depends(get_db), user
 @router.post("/cv")
 def upload_cv(file: UploadFile = File(...), db: Session = Depends(get_db), user: User = Depends(require_role(UserRole.user))):
     if file.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="ERR-VAL-08: CV wajib PDF")
+        raise HTTPException(status_code=400, detail="CV wajib PDF")
 
     content = file.file.read()
     if len(content) > 5 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail="ERR-VAL-09: Ukuran CV maksimal 5MB")
+        raise HTTPException(status_code=400, detail="Ukuran CV maksimal 5MB")
 
     local_path = os.path.join(UPLOAD_DIR, f"user_{user.id}_{file.filename}")
     with open(local_path, "wb") as f:

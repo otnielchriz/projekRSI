@@ -220,17 +220,17 @@ export default function ApplicantDashboard() {
     setSkillError("");
 
     if (!newSkill.nama.trim()) {
-      setSkillError("ERR-VAL-05: Nama skill wajib diisi");
+      setSkillError("Nama skill wajib diisi");
       return;
     }
 
     if (skills.length >= 10) {
-      setSkillError("ERR-VAL-06: Maksimal 10 skill dapat ditambahkan (BR-06)");
+      setSkillError("Maksimal 10 skill dapat ditambahkan (BR-06)");
       return;
     }
 
     if (newSkill.level < 1 || newSkill.level > 5) {
-      setSkillError("ERR-VAL-06: Level skill harus antara 1-5");
+      setSkillError("Level skill harus antara 1-5");
       return;
     }
 
@@ -255,12 +255,12 @@ export default function ApplicantDashboard() {
     setProjectError("");
 
     if (!newProject.nama.trim()) {
-      setProjectError("ERR-VAL-04: Nama project wajib diisi");
+      setProjectError("Nama project wajib diisi");
       return;
     }
 
     if (newProject.nama.length > 100) {
-      setProjectError("ERR-VAL-04: Nama project maksimal 100 karakter");
+      setProjectError("Nama project maksimal 100 karakter");
       return;
     }
 

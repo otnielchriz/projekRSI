@@ -21,7 +21,7 @@ def list_skills(db: Session = Depends(get_db)):
 def create_skill(payload: SkillCreate, db: Session = Depends(get_db), admin=Depends(require_role(UserRole.admin))):
     exists = db.query(Skill).filter(Skill.skill_name == payload.skill_name).first()
     if exists:
-        raise HTTPException(status_code=400, detail="ERR-VAL-21: Nama skill duplikat")
+        raise HTTPException(status_code=400, detail="Nama skill duplikat")
     skill = Skill(skill_name=payload.skill_name)
     db.add(skill)
     db.commit()

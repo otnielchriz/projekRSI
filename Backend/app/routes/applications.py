@@ -74,16 +74,16 @@ def serialize_application_detail(app: Application):
 def apply_job(job_id: int, db: Session = Depends(get_db), user: User = Depends(require_role(UserRole.user))):
     job = db.query(Job).filter(Job.id == job_id).first()
     if not job or job.status != JobStatus.published or not job.is_validated:
-        raise HTTPException(status_code=400, detail="ERR-BUS-07: Lowongan tidak aktif atau belum divalidasi")
+        raise HTTPException(status_code=400, detail="Lowongan tidak aktif atau belum divalidasi")
 
     if job.expired_date and job.expired_date < datetime.utcnow():
-        raise HTTPException(status_code=400, detail="ERR-BUS-07: Lowongan sudah ditutup")
+        raise HTTPException(status_code=400, detail="Lowongan sudah ditutup")
 
     if db.query(Application).filter(Application.user_id == user.id, Application.job_id == job_id).first():
-        raise HTTPException(status_code=400, detail="ERR-BUS-06: User sudah pernah melamar lowongan ini")
+        raise HTTPException(status_code=400, detail="User sudah pernah melamar lowongan ini")
 
     if db.query(UserSkill).filter(UserSkill.user_id == user.id).count() < 1:
-        raise HTTPException(status_code=400, detail="ERR-BUS-08: Profil kompetensi kosong. Tambahkan minimal 1 hard skill dulu.")
+        raise HTTPException(status_code=400, detail="Profil kompetensi kosong. Tambahkan minimal 1 hard skill dulu.")
 
     score = calculate_matching_score(db, user.id, job_id)
     application = Application(user_id=user.id, job_id=job_id, matching_score=score)

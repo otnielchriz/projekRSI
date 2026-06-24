@@ -32,7 +32,7 @@ def user_to_dict(user: User):
 @router.post("/register/user")
 def register_user(payload: RegisterUser, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == payload.email).first():
-        raise HTTPException(status_code=400, detail="ERR-VAL-01: Email sudah terdaftar")
+        raise HTTPException(status_code=400, detail="Email sudah terdaftar")
 
     user = User(
         full_name=payload.full_name,
@@ -50,7 +50,7 @@ def register_user(payload: RegisterUser, db: Session = Depends(get_db)):
 @router.post("/register/company")
 def register_company(payload: RegisterCompany, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == payload.email).first():
-        raise HTTPException(status_code=400, detail="ERR-VAL-01: Email sudah terdaftar")
+        raise HTTPException(status_code=400, detail="Email sudah terdaftar")
 
     user = User(
         full_name=payload.company_name,
@@ -81,17 +81,17 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email).first()
 
     if not user:
-        raise HTTPException(status_code=401, detail="ERR-AUTH-02: Email atau password salah")
+        raise HTTPException(status_code=401, detail="Email atau password salah")
 
     if user.is_locked:
-        raise HTTPException(status_code=403, detail="ERR-LOCK-01: Akun terkunci karena 5 kali gagal login")
+        raise HTTPException(status_code=403, detail="Akun terkunci karena 5 kali gagal login")
 
     if not verify_password(payload.password, user.password_hash):
         user.failed_login_attempts += 1
         if user.failed_login_attempts >= 5:
             user.is_locked = True
         db.commit()
-        raise HTTPException(status_code=401, detail="ERR-AUTH-02: Email atau password salah")
+        raise HTTPException(status_code=401, detail="Email atau password salah")
 
     user.failed_login_attempts = 0
     db.commit()
